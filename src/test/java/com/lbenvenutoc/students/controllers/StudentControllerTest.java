@@ -16,6 +16,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import com.lbenvenutoc.students.customexceptions.StudentExistsException;
 import com.lbenvenutoc.students.models.Student;
 import com.lbenvenutoc.students.services.StudentService;
+import com.lbenvenutoc.students.services.constants.ErrorConstants;
 import com.lbenvenutoc.students.testutils.GenerateStudentsObjectTestUtil;
 
 import reactor.core.publisher.Flux;
@@ -35,12 +36,6 @@ public class StudentControllerTest {
 	public void givenStudentWhenSaveStudentThenReturnSavedStudent() {
 
 		Student student = GenerateStudentsObjectTestUtil.getFirstStudent();
-		student.setCode(1L);
-		student.setId(1L);
-		student.setAge(37);
-		student.setName("Luis");
-		student.setLastname("Benvenuto");
-		student.setState(1);
 
 		given(studentService.save(any(Student.class))).willReturn(Mono.just(student));
 
@@ -56,8 +51,8 @@ public class StudentControllerTest {
 
 		Student student = GenerateStudentsObjectTestUtil.getWrongFirstStudent();
 
-		given(studentService.save(student)).willReturn(Mono.<Student>error(new StudentExistsException(
-				"there is already a student in the database with the code " + student.getCode())));
+		given(studentService.save(student)).willReturn(Mono
+				.<Student>error(new StudentExistsException(ErrorConstants.MESSAGE_STUDENT_EXISTS + student.getCode())));
 
 		WebTestClient.ResponseSpec response = webTestClient.post().uri("/api/students")
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).exchange();
