@@ -1,14 +1,14 @@
 package com.lbenvenutoc.studentmanagement.student.adapter.out.persistence;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.lbenvenutoc.studentmanagement.student.application.port.out.StudentPersistencePort;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Component
+@Repository
 public class StudentPersistAdapter implements StudentPersistencePort {
 
 	private StudentRepository studentRepository;
